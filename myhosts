@@ -1,1 +1,6 @@
-localhost
+[other]
+llocalhost
+
+
+[appserver]
+172.31.31.154
