@@ -1,6 +1,6 @@
 ---
 sourcedir: /var/lib/jenkins/.m2/repository/com/wakaleo/gameoflife/gameoflife-web/1.0-SNAPSHOT
-sourcewar:/gameoflife-web-1.0-SNAPSHOT.war
-destnationdir:/usr/share/tomcat/webapps
-destnationwar:/gameoflife-web-1.0-SNAPSHOT.war
+sourcewar: /gameoflife-web-1.0-SNAPSHOT.war
+destnationdir: /usr/share/tomcat/webapps
+destnationwar: /gameoflife-web-1.0-SNAPSHOT.war
 

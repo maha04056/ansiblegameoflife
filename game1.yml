@@ -9,23 +9,32 @@
       yum: 
         name: tomcat
         state: present
-
-    - name: check the war existances
+    - name: check the war file existances
+      stat:
+        path: "{{destnationdir}}{{destnationwar}}"
+      register: warst
+    - name: warst dispaly name od package of instalation	
+      debug:
+        msg: "{{warst}}"
+    - name: delete the war file
       file: 
         path: "{{destnationdir}}{{destnationwar}}"
         state: absent
-      register: warst
-    - name: dispaly name od package of instalation	
+      register: wardel
+    - name: wardel dispaly name od package of instalation	
       debug:
-        msg: "{{warst}}"
-
+        msg: "{{wardel}}"
+      when: warst.stat.exists==true
     - name:  copying the war file into webapp folder
       copy:
         src: "{{sourcedir}}{{sourcewar}}"
         dest: "{{destnationdir}}{{destnationwar}}"
       notify:
       - restartingtomcat
+      when: wardel.state=="absent"
+ 
       
+           
   handlers: 
     - name: restartingtomcat
       service:
