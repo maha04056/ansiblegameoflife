@@ -1,6 +1,34 @@
 ---
-- hosts: all
+- hosts: appserver
   become: yes
   tasks: 
     - name: ping ll
       ping:
+
+    - name: installing  tomcat
+      yum: 
+        name: tomcat
+        state: present
+
+    - name: check the war existances
+      file: 
+        path: /usr/share/tomcat/webapps/gameoflife-web-1.0-SNAPSHOT.war
+        state: absent
+      register: warst
+    - name: dispaly name od package of instalation	
+      debug:
+        msg: "{{warst}}"
+
+    - name:  copying the war file into webapp folder
+      copy:
+        src: /var/lib/jenkins/.m2/repository/com/wakaleo/gameoflife/gameoflife-web/1.0-SNAPSHOT/gameoflife-web-1.0-SNAPSHOT.war
+        dest: /usr/share/tomcat/webapps/gameoflife-web-1.0-SNAPSHOT.war
+      notify:
+      - restartingtomcat
+      
+  handlers: 
+    - name: restartingtomcat
+      service:
+        name: tomcat
+        state: restarted 
+        
