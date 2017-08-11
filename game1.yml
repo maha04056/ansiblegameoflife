@@ -1,0 +1,34 @@
+---
+- hosts: appserver
+  become: yes
+  tasks: 
+    - name: ping ll
+      ping:
+
+    - name: installing  tomcat
+      yum: 
+        name: tomcat
+        state: present
+
+    - name: check the war existances
+      file: 
+        path: "{{destnationdir}}{{destnationwar}}"
+        state: absent
+      register: warst
+    - name: dispaly name od package of instalation	
+      debug:
+        msg: "{{warst}}"
+
+    - name:  copying the war file into webapp folder
+      copy:
+        src: "{{sourcedir}}{{sourcewar}}"
+        dest: "{{destnationdir}}{{destnationwar}}"
+      notify:
+      - restartingtomcat
+      
+  handlers: 
+    - name: restartingtomcat
+      service:
+        name: tomcat
+        state: restarted 
+        
