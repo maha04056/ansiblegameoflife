@@ -1,39 +1,51 @@
 ---
 - hosts: appserver
   become: yes
-  tasks: 
-    - name: ping ll
-      ping:
-
+  tasks:
     - name: installing  tomcat
-      yum: 
+      yum:
         name: tomcat
         state: present
-    - name: check the war file existances
+    - name: warst1 check the war file existances
       stat:
         path: "{{destnationdir}}{{destnationwar}}"
       register: warst
-    - name: warst dispaly name od package of instalation	
+    - name: warst dispaly name of package of instalation
       debug:
         msg: "{{warst}}"
+      
     - name: delete the war file
-      file: 
+      file:
         path: "{{destnationdir}}{{destnationwar}}"
         state: absent
       register: wardel
-    - name: wardel dispaly name od package of instalation	
+      when: warst.stat.exists==true
+
+    - name: wardel dispaly name of package of instalation
       debug:
         msg: "{{wardel}}"
-      when: warst.stat.exists==true
-    - name:  copying the war file into webapp folder
-      copy:
-        src: "{{sourcedir}}{{sourcewar}}"
+      
+    - name: source path
+      debug:
+        msg: "{{sourcedir1}}{{bulidno}}{{sourcedir2}}{{sourcewar}}"
+
+    - name: warst2 check the war file existances
+      stat:
+        path: "{{destnationdir}}{{destnationwar}}"
+      register: warst2  
+    - name: warst dispaly name of package of instalation
+      debug:
+        msg: "{{warst2}}"
+
+    - name:  Dowloading the war file into webapp folder
+      get_url:
+        url: "{{sourcedir1}}{{bulidno}}{{sourcedir2}}{{sourcewar}}"
         dest: "{{destnationdir}}{{destnationwar}}"
       notify:
       - restartingtomcat
-      when: wardel.state=="absent"
+      when: warst2.stat.exists==false
+
  
-      
            
   handlers: 
     - name: restartingtomcat

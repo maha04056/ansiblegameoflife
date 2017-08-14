@@ -1,6 +1,6 @@
 ---
-sourcedir: /var/lib/jenkins/.m2/repository/com/wakaleo/gameoflife/gameoflife-web/1.0-SNAPSHOT
-sourcewar: /gameoflife-web-1.0-SNAPSHOT.war
+sourcedir1: http://52.77.216.94:8081/artifactory/test4me/
+sourcedir2: /gameoflife-web/target
+sourcewar: /gameoflife.war
 destnationdir: /usr/share/tomcat/webapps
-destnationwar: /gameoflife-web-1.0-SNAPSHOT.war
-
+destnationwar: /gameoflife.war
