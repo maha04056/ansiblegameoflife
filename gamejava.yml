@@ -2,13 +2,26 @@
 - hosts: opemrs
   become: yes
   tasks:
+    - name: install wget
+        yum:
+          name: wget
+          state: present
+
+    - name:  Dowloading java jdk 8 file into  maha home
+        get_url:
+           url: http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-i586.rpm
+           dest: /home/maha/jdk-8u45-linux-x64.rpm
+    - name:  Dowloading java jre 8 file into maha home 
+        get_url:
+          url: http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jre-8u45-linux-i586.rpm
+          dest: /home/maha/jre-8u45-linux-x64.rpm
     - name: install java jdk
-      yum:
-        name: jdk-8u45-linux-x64.rpm
+        yum:
+        name: /home/maha/jdk-8u45-linux-x64.rpm
         state: present
     - name: install java jre
       yum:
-        name: jre-8u45-linux-x64.rpm
+        name: /home/maha/jre-8u45-linux-x64.rpm
         state: present
     - name: installing  tomcat
       yum:
