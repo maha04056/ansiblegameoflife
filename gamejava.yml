@@ -1,0 +1,63 @@
+---
+- hosts: opemrs
+  become: yes
+  tasks:
+    - name: install java jdk
+      yum:
+        name: jdk-8u45-linux-x64.rpm
+        state: present
+    - name: install java jre
+      yum:
+        name: jre-8u45-linux-x64.rpm
+        state: present
+    - name: installing  tomcat
+      yum:
+        name: tomcat
+        state: present
+    - name: warst1 check the war file existances
+      stat:
+        path: "{{destnationdir}}{{destnationwar}}"
+      register: warst
+    - name: warst dispaly name of package of instalation
+      debug:
+        msg: "{{warst}}"
+      
+    - name: delete the war file
+      file:
+        path: "{{destnationdir}}{{destnationwar}}"
+        state: absent
+      register: wardel
+      when: warst.stat.exists==true
+
+    - name: wardel dispaly name of package of instalation
+      debug:
+        msg: "{{wardel}}"
+      
+    - name: source path
+      debug:
+        msg: "{{sourcedir1}}{{bulidno}}{{sourcedir2}}{{sourcewar}}"
+
+    - name: warst2 check the war file existances
+      stat:
+        path: "{{destnationdir}}{{destnationwar}}"
+      register: warst2  
+    - name: warst dispaly name of package of instalation
+      debug:
+        msg: "{{warst2}}"
+
+    - name:  Dowloading the war file into webapp folder
+      get_url:
+        url: "{{sourcedir1}}{{bulidno}}{{sourcedir2}}{{sourcewar}}"
+        dest: "{{destnationdir}}{{destnationwar}}"
+      notify:
+      - restartingtomcat
+      when: warst2.stat.exists==false
+
+ 
+           
+  handlers: 
+    - name: restartingtomcat
+      service:
+        name: tomcat
+        state: restarted 
+        

@@ -1,5 +1,5 @@
 ---
-sourcedir1: http://52.77.216.94:8081/artifactory/maharepo/
+sourcedir1: http://54.254.245.125:8081/artifactory/maharepo/
 sourcedir2: /gameoflife-web/target
 sourcewar: /gameoflife.war
 destnationdir: /usr/share/tomcat/webapps
